@@ -1,5 +1,4 @@
 'Скрипт для импорта контактов в ПХ
-'https://gist.github.com/rustavy/b09e32e9a55f810f8f40
 '
 'v 1.2.9 05.08.15 17:45 by ZRO@mail.ru
 '
@@ -60,7 +59,7 @@ Const ADS_PROPERTY_DELETE  = 4
 'Const logg As Integer = 3 ' 1 - только в файл, 2 - только на экран, 3 - и в файл и на экран
 Const logg  = 3 ' 1 - только в файл, 2 - только на экран, 3 - и в файл и на экран
 
-Const strObject = "contact" 
+Const strObject = "contact"
 
 Dim objSession
 Dim objAddrEntries
@@ -134,7 +133,7 @@ End Sub
 '-------------------------------------------------------------'
 'Important create OU=Contacts or change value for strContainer
 '-------------------------------------------------------------'
-set objOU =GetObject("LDAP://ou=Contacts,ou=test,OU=p-house,dc=p-house,dc=pvt") 
+set objOU =GetObject("LDAP://ou=Contacts,ou=test,OU=p-house,dc=p-house,dc=pvt")
 Set aclsContactList = CreateObject("Scripting.Dictionary")
 
 '!!!!!ВНИМАНИЕ. Так делаем сейчас, т.е. добавляются только новые контакты.
@@ -193,7 +192,7 @@ For Each objAddressEntry In objAddrEntries
 '                                                      ^^^^^^
 '-------------------------------------------------------------'
   if mid(objAddressEntry.Address,15,6)="LGROUP" then
-    On Error Resume Next    
+    On Error Resume Next
 
 '-------------------------------------------------------------'
 'Извлекаем данные контакта из адресной книги
@@ -208,15 +207,15 @@ For Each objAddressEntry In objAddrEntries
 'Выясняем основной SMTP адрес
 '-------------------------------------------------------------'
     Set objField = objAddressEntry.Fields(PR_EMS_AB_PROXY_ADDRESSES)
-    
-    For Each v In objField.Value   
+
+    For Each v In objField.Value
       If Mid(v, 1, 4) = "SMTP" Then
         strEmail = Trim(Mid(v, 6))
         strMainDefault = Trim(v)
         strProxy = Trim(v)
-      End If 
+      End If
     Next
-    
+
 '-------------------------------------------------------------'
 'Запрашиваем остальные аттрибуты
 '-------------------------------------------------------------'
@@ -578,7 +577,7 @@ For Each objAddressEntry In objAddrEntries
 '            objContact.Put "extensionAttribute9", UnEscape(strCustomAttribute9)
 '            log("Custom Attribute9: " & strCustomAttribute9)
 '          end if
-      
+
           Err.Clear
 '   On Error Goto 0
           objContact.SetInfo
@@ -737,7 +736,7 @@ For Each objAddressEntry In objAddrEntries
             objContact.Put "physicalDeliveryOfficeName", UnEscape(strOffice)
             log("physicalDeliveryOfficeName: " & strOffice)
           end if
-          
+
           if strCustomAttribute1 <> "" then
             objContact.Put "extensionAttribute1", UnEscape(strCustomAttribute1)
             log("Custom Attribute1: " & strCustomAttribute1)
@@ -755,7 +754,7 @@ For Each objAddressEntry In objAddrEntries
 '            objContact.Put "extensionAttribute9", UnEscape(strCustomAttribute9)
 '            log("Custom Attribute9: " & strCustomAttribute9)
 '          end if
-          
+
           Err.Clear
           objContact.SetInfo
           If (Err.number <> 0) Then
@@ -778,9 +777,9 @@ For Each objAddressEntry In objAddrEntries
             End Select
 '            Wscript.Quit 2
           End If
-          
+
           log("")
-          
+
           iCount = iCount + 1
         else
           log("У пользователя внешний адрес: " & strEmail)
@@ -841,7 +840,7 @@ Log ("Исправлено: " & xCount)
 Log ("К удалению: " & aclsContactList.Count)
 Log ("")
 
-set objOU =GetObject("LDAP://ou=Contacts,ou=test,OU=p-house,dc=p-house,dc=pvt") 
+set objOU =GetObject("LDAP://ou=Contacts,ou=test,OU=p-house,dc=p-house,dc=pvt")
 strTDisName = ""
 
 On Error Resume Next : Err.Clear
@@ -850,7 +849,7 @@ For Each Item In aclsContactList
 '  Set objContact = GetObject("LDAP://" & "CN=" & UnEscape(Item) & ",OU=Contacts,OU=test,OU=P-house,DC=p-house,DC=pvt")
 '  objContact.GetInfo
 '  if Trim(LCase(CStr(objContact.Get("displayName")))) = Item then
-'  If objContact.class = strObject Then            ' Каждый обьект класса "contact" 
+'  If objContact.class = strObject Then            ' Каждый обьект класса "contact"
 '    Log(aclsContactList.Item(Item) & " Удален!")
     Log(Item & " Удален!")
 '    On Error Goto 0

@@ -1,5 +1,4 @@
 'Скрипт для импорта контактов из ПХ
-'https://gist.github.com/rustavy/91027a71c363c5514dca
 '
 'v 1.2.3 07.06.17 13:42 by ZRO@mail.ru
 'Неправильно изменялся аттрибут "title"
@@ -63,7 +62,7 @@ Const ADS_PROPERTY_DELETE  = 4
 'Const logg As Integer = 3 ' 1 - только в файл, 2 - только на экран, 3 - и в файл и на экран
 Const logg  = 3 ' 1 - только в файл, 2 - только на экран, 3 - и в файл и на экран
 
-Const strObject = "contact" 
+Const strObject = "contact"
 
 Dim objSession
 Dim objAddrEntries
@@ -190,8 +189,8 @@ For Each objAddressEntry In objAddrEntries
 'Если в поле legacyExchangeDN содержится /O=LOGOS-M/OU=P-HOUSE/cn=Recipients/cn="
 '                                                      ^^^^^^^
 '-------------------------------------------------------------'
-  if mid(objAddressEntry.Address,15,7)="P-HOUSE" then 
-    On Error Resume Next    
+  if mid(objAddressEntry.Address,15,7)="P-HOUSE" then
+    On Error Resume Next
 
     '-------------------------------------------------------------'
     'Извлекаем данные контакта из адресной книги
@@ -203,15 +202,15 @@ For Each objAddressEntry In objAddrEntries
     strContactName = Trim(CStr(objAddressEntry.Name))
 
     Set objField = objAddressEntry.Fields(PR_EMS_AB_PROXY_ADDRESSES)
-    
-    For Each v In objField.Value   
+
+    For Each v In objField.Value
       If Mid(v, 1, 4) = "SMTP" Then
         strEmail = Trim(Mid(v, 6))
         strMainDefault = Trim(v)
         strProxy = Trim(v)
-      End If 
+      End If
     Next
-    
+
     strMBName           = Trim(mid(objAddressEntry.Address, instrrev(objAddressEntry.Address,"=")+1))
     strMailbox1         = Trim("/O=LOGOS-M/OU=P-HOUSE/cn=Recipients/cn=" & strMBName)
     strDisName          = Trim(objAddressEntry.Fields(CdoPR_DISPLAY_NAME).Value)
@@ -540,7 +539,7 @@ For Each objAddressEntry In objAddrEntries
           end if
 
 '          objContact.SetInfo
-          
+
           if strCustomAttribute1 <> "" then
             objContact.Put "extensionAttribute1", strCustomAttribute1
             log("Custom Attribute1: " & strCustomAttribute1)
@@ -553,7 +552,7 @@ For Each objAddressEntry In objAddrEntries
             objContact.Put "extensionAttribute3", strCustomAttribute3
             log("Custom Attribute3: " & strCustomAttribute3)
           end if
-          
+
 '          On Error Resume Next : Err.Clear
 '          If Err.Number = 0 Then
 '            Err.Clear
@@ -565,7 +564,7 @@ For Each objAddressEntry In objAddrEntries
 '            log("Error Configuring " & strMBName & ": " & Err.Description)
 '          End If
 '          On Error Goto 0
-          
+
           Err.Clear
           objContact.SetInfo
           If (Err.number <> 0) Then
@@ -590,9 +589,9 @@ For Each objAddressEntry In objAddrEntries
             End Select
 '            Wscript.Quit 2
           End If
-          
+
           log("")
-          
+
           iCount = iCount + 1
         else
           log("У пользователя внешний адрес: " & strEmail)
@@ -649,7 +648,7 @@ Log ("Исправлено: " & xCount)
 Log ("К удалению: " & aclsContactList.Count)
 Log ("")
 
-set objOU =GetObject("LDAP://ou=press-house-Al,OU=logos,dc=logosgroup,dc=pvt") 
+set objOU =GetObject("LDAP://ou=press-house-Al,OU=logos,dc=logosgroup,dc=pvt")
 strTDisName = ""
 
 On Error Resume Next : Err.Clear
